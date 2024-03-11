@@ -3,13 +3,20 @@ from starlette.config import Config
 from starlette.requests import Request
 from starlette.middleware.sessions import SessionMiddleware
 from authlib.integrations.requests_client import OAuth2Session
-
+from starlette.middleware.cors import CORSMiddleware
 from authlib.integrations.starlette_client import OAuth
 from pprint import pprint
 
 app = FastAPI()
 app.add_middleware(SessionMiddleware, secret_key="!secret")
-
+app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+        expose_headers=["Content-Range"],
+    )
 
 config = Config('.env')
 oauth = OAuth(config)
